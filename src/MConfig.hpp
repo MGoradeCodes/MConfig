@@ -120,11 +120,11 @@ private:
                 path.push_back(parse[i-1]); // Push the first key on a sub-branch
                 i++;
             }
-            if(parse[i] == ":" && i > 0 && i+1 < parse.size()){
+            else if(parse[i] == ":" && i > 0 && i+1 < parse.size()){
                 string fullkey = makeKey(path, parse[i-1]); //Make Key from the existing path, from earlier.
                 config[fullkey] = parse[i+1]; // key + add value after the colon.
             }
-            if(parse[i] == "}" && !path.empty() ){
+            else if(parse[i] == "}" && !path.empty() ){
                 path.pop_back();
             }
         }
