@@ -127,4 +127,4 @@ License information coming soon.
 
 ---
 
-*Made with C++ and curiosity.*
+*Made with C++.*
