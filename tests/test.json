@@ -1,0 +1,11 @@
+{
+    "Name" : "Anthony",
+    "NickName": "Lebowsky",
+    "Age": 12,
+    "Gender" : "Male" ,
+    "Employed" : true,
+    "Address": {
+        "Street" : "St Carlos. Street",
+        "Building": "Sunflower Building"
+    }
+}
