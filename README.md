@@ -1,3 +1,5 @@
+![MConfig Banner](banner.png)
+
 # MConfig
 
 **A lightweight configuration file parser written in C++.**
@@ -19,8 +21,8 @@ Built from scratch using the C++ Standard Library, MConfig aims to provide a lig
 - [ ] Additional primitive data types.
 - [ ] Improved syntax validation and error handling.
 - [ ] Escaped character support.
-- [X] Improved whitespace handling.
-- [X] Expanded nested object support.
+- [x] Improved whitespace handling.
+- [x] Expanded nested object support.
 
 ## Project Structure
 
@@ -31,6 +33,7 @@ MConfig/
 ├── tests/
 │   ├── test.json
 │   └── main.cpp
+├── banner.png
 └── README.md
 ```
 
@@ -42,7 +45,7 @@ Include the MConfig header in your project:
 #include "MConfig.hpp"
 ```
 
-Create an instance of `MParse` and load a configuration file:
+Create an instance of `MConfig` and load a configuration file:
 
 ```cpp
 #include <iostream>
