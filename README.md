@@ -19,8 +19,8 @@ Built from scratch using the C++ Standard Library, MConfig aims to provide a lig
 - [ ] Additional primitive data types.
 - [ ] Improved syntax validation and error handling.
 - [ ] Escaped character support.
-- [ ] Improved whitespace handling.
-- [ ] Expanded nested object support.
+- [X] Improved whitespace handling.
+- [X] Expanded nested object support.
 
 ## Project Structure
 
@@ -50,7 +50,7 @@ Create an instance of `MParse` and load a configuration file:
 
 int main()
 {
-    MParse config;
+    MConfig config;
 
     config.LoadFile("config.json");
 
@@ -91,14 +91,14 @@ MConfig uses the C++ Standard Library and does not require external dependencies
 Compile the test program:
 
 ```bash
-g++ tests/main.cpp -o MConfigTests
+g++ tests/main.cpp -o program
 ```
 
 Run the executable from the `tests/` directory:
 
 ```bash
 cd tests
-./MConfigTests
+./program.exe
 ```
 
 The test suite checks whether the configuration file loads correctly, tokens are generated, and expected keys are extracted.
