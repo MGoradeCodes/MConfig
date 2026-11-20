@@ -116,11 +116,11 @@ private:
 
         for (int i = 0; i < parse.size(); i++) {
             //My Sub-branch
-            if(parse[i] == ":" && i > 0 && i+1 < size && parse[i+1] == "{" ){
+            if(parse[i] == ":" && i > 0 && i+1 < parse.size() && parse[i+1] == "{" ){
                 path.push_back(parse[i-1]); // Push the first key on a sub-branch
                 i++;
             }
-            if(parse[i] == ":" && i > 0 && i+1 < size){
+            if(parse[i] == ":" && i > 0 && i+1 < parse.size()){
                 string fullkey = makeKey(path, parse[i-1]); //Make Key from the existing path, from earlier.
                 config[fullkey] = parse[i+1]; // key + add value after the colon.
             }
