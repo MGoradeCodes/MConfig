@@ -184,7 +184,7 @@ Future updates aim to add:
 
 ## License
 
-License information coming soon.
+MIT LICENSE.
 
 ---
 
