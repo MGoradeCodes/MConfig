@@ -37,6 +37,10 @@ void runTests() {
     for(std::string s : friendsData){
         std::cout << "Friend name: " << s << "\n";
     }
+    bool res = parser.getBool("StringBool");
+    std::cout << res << " with type" << typeid(res).name() << " \n";
+    float money = parser.get<float>("Money");
+    std::cout << "Money : " << money << " with type: " << typeid(money).name() << "\n";
     
 }
 

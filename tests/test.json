@@ -4,9 +4,11 @@
     "Age": 12,
     "Gender" : "Male" ,
     "Employed" : true,
+    "Money" : "123.654",
     "Friends" : "Johnny, Rachel, Michelle, Edward",
     "Address": {
         "Street" : "St Carlos. Street",
         "Building": "Sunflower Building"
-    }
+    },
+    "StringBool" : "true"
 }

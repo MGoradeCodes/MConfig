@@ -36,6 +36,15 @@ public:
         }
         return convertVector<T>(it->second);
     }
+    bool getBool(const std::string& key){
+        auto it = result.find(key);
+        if(it == result.end()){
+            std::runtime_error("Key not found " + key);
+        }
+        bool res;
+        std::istringstream(it->second) >> std::boolalpha >> res;
+        return res;
+    }
 
 
     std::unordered_map<string, string> result;
