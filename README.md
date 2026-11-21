@@ -18,7 +18,7 @@ Built from scratch using the C++ Standard Library, MConfig aims to provide a lig
 - [x] Key-value pair extraction.
 - [x] Basic bracket syntax validation.
 - [x] Token storage and retrieval.
-- [ ] Additional primitive data types.
+- [x] Additional primitive data types.
 - [ ] Improved syntax validation and error handling.
 - [ ] Escaped character support.
 - [x] Improved whitespace handling.
