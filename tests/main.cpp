@@ -30,6 +30,8 @@ void runTests() {
     std::cout << "Employed?: " << data["Employed"] << "\n";
     std::cout << "Address: Street: " << data["Address.Street"] << "\n";
     std::cout << "Building: " << data["Address.Building"] << "\n";
+    std::cout << "Friends: " << typeid(data["Friends"]).name() << "\n";
+    
 }
 
 int main() {
@@ -38,3 +40,5 @@ int main() {
     std::cout << "\n[PASS] All checks passed!\n";
     return 0;
 }
+
+

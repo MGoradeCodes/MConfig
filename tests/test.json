@@ -4,6 +4,7 @@
     "Age": 12,
     "Gender" : "Male" ,
     "Employed" : true,
+    "Friends" : "Johnny Edmonds, Rachel, Michelle, Edward",
     "Address": {
         "Street" : "St Carlos. Street",
         "Building": "Sunflower Building"

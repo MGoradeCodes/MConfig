@@ -9,10 +9,12 @@
 #include <string_view>
 #include <cctype>
 #include <algorithm>
+#include <variant>
 #include <unordered_map>
 
 using std::vector;
 using std::string;
+
 
 class MParse{
 public:
@@ -37,25 +39,32 @@ public:
         return parse;
     }
 
-    bool isBool(string s){
-        if(s == "true"){
-            return true;
+    void trim(std::string& str) {
+        const std::string whitespace = " \t\n\r\f\v";
+        
+        size_t start = str.find_first_not_of(whitespace);
+        if (start == std::string::npos) {
+            str.clear();
+            return;
         }
-        return false;
+        
+        size_t end = str.find_last_not_of(whitespace);
+        
+        str.erase(end + 1);
+        str.erase(0, start);
     }
 
 private:
     std::string content;
     vector<std::string> parse;
-    int size;
-    std::string word;
+    std::vector<string> arr;
     std::unordered_map<string, string> tokenizer(string s) {
         string content = s;
         int size = content.size();
         parse.clear(); 
         std::unordered_map<string, string> config;
         string word = "";
-
+        string item;
         int ObracketCount = std::count(content.begin(), content.end(), '{');
         int CBracketCount = std::count(content.begin(), content.end(), '}');
         if (ObracketCount != CBracketCount) {
@@ -89,7 +98,19 @@ private:
                 parse.push_back(":"); 
             } 
             else if (content[i] == ',') {
-                
+                string item = "";
+                if(word.find(",") != std::string::npos){
+                    for(int c = 0; c < word.size(); c++){
+                        while(word[c]!=','){
+                            item += word[c];
+                            c++;
+                        }
+                        trim(item);
+                        arr.push_back(item);
+                        item.clear();
+                        c++;
+                    }
+                }
             }
             else if (std::isalnum(static_cast<unsigned char>(content[i])) || content[i] == '-' || content[i] == '.') {
                 word = "";
@@ -99,6 +120,15 @@ private:
                 }
                 parse.push_back(word);
                 i--; 
+            }
+            else if (content[i] == '[') {
+                i++; 
+                word = "";
+                while (i < size && content[i] != ']') {
+                    word += content[i];
+                    i++;
+                }
+                parse.push_back(word);
             }
 
         }
@@ -131,6 +161,5 @@ private:
 
         return config;
         
-    }
-
+    }    
 };
