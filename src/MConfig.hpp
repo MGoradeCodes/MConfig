@@ -11,13 +11,33 @@
 #include <algorithm>
 #include <variant>
 #include <unordered_map>
+#include <stdexcept>
+#include <type_traits>
 
 using std::vector;
 using std::string;
 
-
 class MConfig{
 public:
+
+    template<typename T = std::string>
+    T get(const std::string& s){
+        auto it = result.find(s);
+        if(it == result.end()){
+            throw std::runtime_error("Error: cannot find key '" + s + "'");
+        }
+        return parseValue<T>(it->second);
+    }
+    template <typename T = std::string>
+    std::vector<T> getVector(const std::string& key) const {
+        auto it = result.find(key);
+        if (it == result.end()) {
+            throw std::runtime_error("Key not found: " + key);
+        }
+        return convertVector<T>(it->second);
+    }
+
+
     std::unordered_map<string, string> result;
     void LoadFile(const char* filepath){
         std::ifstream file(filepath);
@@ -39,20 +59,6 @@ public:
         return parse;
     }
 
-    void trim(std::string& str) {
-        const std::string whitespace = " \t\n\r\f\v";
-        
-        size_t start = str.find_first_not_of(whitespace);
-        if (start == std::string::npos) {
-            str.clear();
-            return;
-        }
-        
-        size_t end = str.find_last_not_of(whitespace);
-        
-        str.erase(end + 1);
-        str.erase(0, start);
-    }
 
 private:
     std::string content;
@@ -98,19 +104,6 @@ private:
                 parse.push_back(":"); 
             } 
             else if (content[i] == ',') {
-                string item = "";
-                if(word.find(",") != std::string::npos){
-                    for(int c = 0; c < word.size(); c++){
-                        while(word[c]!=','){
-                            item += word[c];
-                            c++;
-                        }
-                        trim(item);
-                        arr.push_back(item);
-                        item.clear();
-                        c++;
-                    }
-                }
             }
             else if (std::isalnum(static_cast<unsigned char>(content[i])) || content[i] == '-' || content[i] == '.') {
                 word = "";
@@ -161,5 +154,51 @@ private:
 
         return config;
         
-    }    
+    } 
+    void trim(std::string& str) const {
+        const std::string whitespace = " \t\n\r\f\v";
+        
+        size_t start = str.find_first_not_of(whitespace);
+        if (start == std::string::npos) {
+            str.clear();
+            return;
+        }
+        
+        size_t end = str.find_last_not_of(whitespace);
+        
+        str.erase(end + 1);
+        str.erase(0, start);
+    }
+
+    template <typename T>
+    T parseValue(const std::string& s) const{
+        if constexpr (std::is_same_v<T, std::string>){
+            return s;
+        } else {
+            std::stringstream ss(s);
+            T val;
+            if (!(ss >> val) || !(ss >> std::ws).eof()) {
+                throw std::invalid_argument("Cannot convert : " + s);
+            }
+            return val;
+        }
+    }
+
+    template <typename T = std::string>
+    std::vector<T> convertVector(const std::string& word) const {
+        std::vector<T> arr; // Local vector so old results don't accumulate
+        if (word.empty()) return arr;
+
+        std::stringstream ss(word);
+        std::string item;
+        while (std::getline(ss, item, ',')) {
+            trim(item);
+            if (!item.empty()) {
+                arr.push_back(parseValue<T>(item));
+            }
+        }
+        return arr;
+    }
+    
+    
 };

@@ -7,11 +7,11 @@
 #include "../src/MConfig.hpp"
 
 void runTests() {
-    MConfig helper;
-    helper.LoadFile("test.json");
+    MConfig parser;
+    parser.LoadFile("test.json");
 
-    std::unordered_map<std::string, std::string> data = helper.fetchData();
-    std::vector<std::string> parsedData = helper.returnParse();
+    std::unordered_map<std::string, std::string> data = parser.fetchData();
+    std::vector<std::string> parsedData = parser.returnParse();
 
     // Verify file loaded and tokens were parsed
     assert(!parsedData.empty() && "Token list is empty — ensure you run from the tests/ folder");
@@ -24,13 +24,19 @@ void runTests() {
     assert(data.find("Address.Street") != data.end());
     assert(data.find("Address.Building") != data.end());
 
+    int age = parser.get<int>("Age");
+
     // Print parsed values
     std::cout << "Name is: " << data["Name"] << "\n";
     std::cout << "Gender: " << data["Gender"] << "\n";
     std::cout << "Employed?: " << data["Employed"] << "\n";
     std::cout << "Address: Street: " << data["Address.Street"] << "\n";
     std::cout << "Building: " << data["Address.Building"] << "\n";
-    std::cout << "Friends: " << typeid(data["Friends"]).name() << "\n";
+    std::cout << "Age as int: " << age <<  " with type, " << typeid(age).name() << "\n";
+    std::vector<std::string> friendsData = parser.getVector("Friends");
+    for(std::string s : friendsData){
+        std::cout << "Friend name: " << s << "\n";
+    }
     
 }
 
