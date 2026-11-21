@@ -38,13 +38,15 @@ MConfig/
 
 ## Usage
 
-Include the `MConfig` header in your project:
+### Including MConfig
+
+Include the header in your project:
 
 ```cpp
 #include "MConfig.hpp"
 ```
 
-Create an instance of `MParse`, load a configuration file, and query typed values, booleans, or vectors using dot-notation keys:
+Create an instance of `MConfig`, load a configuration file, and query typed values, booleans, or vectors using dot-notation keys:
 
 ```cpp
 #include <iostream>
@@ -53,7 +55,7 @@ Create an instance of `MParse`, load a configuration file, and query typed value
 
 int main()
 {
-    MParse config;
+    MConfig config;
     config.LoadFile("config.json");
 
     // Fetch single values with automatic type conversion
@@ -73,6 +75,49 @@ int main()
     return 0;
 }
 ```
+
+### Using MConfig with CMake
+
+MConfig can be integrated into CMake projects using `FetchContent`. This allows CMake to automatically download the library from GitHub during configuration.
+
+First, add the following to your project's `CMakeLists.txt`:
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(
+    MConfig
+    GIT_REPOSITORY https://github.com/MGoradeCodes/MConfig.git
+    GIT_TAG main
+)
+
+FetchContent_MakeAvailable(MConfig)
+
+target_link_libraries(MyApp PRIVATE MConfig)
+```
+
+Replace `MyApp` with the name of your executable or library target.
+
+**Note:** For this integration to work, the MConfig repository must provide a `CMakeLists.txt` defining an interface library target.
+
+A minimal `CMakeLists.txt` for MConfig itself would look like this:
+
+```cmake
+cmake_minimum_required(VERSION 3.20)
+
+project(MConfig LANGUAGES CXX)
+
+add_library(MConfig INTERFACE)
+
+target_include_directories(MConfig
+    INTERFACE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+target_compile_features(MConfig INTERFACE cxx_std_17)
+```
+
+Since MConfig is header-only, an `INTERFACE` library is sufficient. No compilation of a separate library binary is required.
 
 ## Example Configuration
 
