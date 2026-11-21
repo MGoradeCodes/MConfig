@@ -7,7 +7,7 @@
 #include "../src/MConfig.hpp"
 
 void runTests() {
-    MParse helper;
+    MConfig helper;
     helper.LoadFile("test.json");
 
     std::unordered_map<std::string, std::string> data = helper.fetchData();

@@ -16,7 +16,7 @@ using std::vector;
 using std::string;
 
 
-class MParse{
+class MConfig{
 public:
     std::unordered_map<string, string> result;
     void LoadFile(const char* filepath){
