@@ -2,27 +2,26 @@
 
 # MConfig
 
-**A lightweight configuration file parser written in C++.**
+**A lightweight, header-only configuration file parser written in C++.**
 
-MConfig is a custom-built C++ configuration parsing library designed to read structured configuration files, tokenize their contents, and extract key-value pairs into easily accessible data structures.
+MConfig is a custom-built C++ configuration parsing library designed to read structured JSON-like configuration files, tokenize their contents, flatten nested keys, and extract strongly typed values and arrays on demand.
 
-Built from scratch using the C++ Standard Library, MConfig aims to provide a lightweight and reusable solution for handling configuration data without relying on external parsing dependencies.
+Built from scratch using the C++ Standard Library, MConfig provides a fast, zero-dependency solution for handling configuration data in C++ projects.
 
 > **Status:** Active development 🚧
 
 ## Features
 
-- [x] Configuration file loading.
-- [x] Basic tokenization.
-- [x] String extraction.
-- [x] Key-value pair extraction.
-- [x] Basic bracket syntax validation.
-- [x] Token storage and retrieval.
-- [x] Additional primitive data types.
-- [ ] Improved syntax validation and error handling.
-- [ ] Escaped character support.
-- [x] Improved whitespace handling.
-- [x] Expanded nested object support.
+- [x] Configuration file loading (`LoadFile`).
+- [x] Custom lexer / tokenization (`returnParse`).
+- [x] Nested object flattening via dot-notation (`Parent.Child`).
+- [x] Type conversion (`get<T>`).
+- [x] Boolean string parsing (`getBool`).
+- [x] Typed array / vector parsing (`getVector<T>`).
+- [x] Basic bracket and formatting syntax validation.
+- [x] Whitespace trimming and handling.
+- [ ] Improved syntax validation and detailed error reporting.
+- [ ] Escaped character support inside strings.
 
 ## Project Structure
 
@@ -39,27 +38,37 @@ MConfig/
 
 ## Usage
 
-Include the MConfig header in your project:
+Include the `MConfig` header in your project:
 
 ```cpp
 #include "MConfig.hpp"
 ```
 
-Create an instance of `MConfig` and load a configuration file:
+Create an instance of `MParse`, load a configuration file, and query typed values, booleans, or vectors using dot-notation keys:
 
 ```cpp
 #include <iostream>
+#include <vector>
 #include "MConfig.hpp"
 
 int main()
 {
-    MConfig config;
-
+    MParse config;
     config.LoadFile("config.json");
 
-    auto data = config.fetchData();
+    // Fetch single values with automatic type conversion
+    std::string name = config.get("Name");
+    int building     = config.get<int>("Address.Building");
+    bool employed    = config.getBool("Employed");
 
-    std::cout << data["Name"] << '\n';
+    // Fetch comma-separated values or arrays as a typed std::vector<T>
+    std::vector<std::string> skills = config.getVector<std::string>("Skills");
+    std::vector<int> ports          = config.getVector<int>("Server.Ports");
+
+    std::cout << "Name: " << name << '\n';
+    std::cout << "Building: " << building << '\n';
+    std::cout << "Employed: " << std::boolalpha << employed << '\n';
+    std::cout << "First Port: " << ports[0] << '\n';
 
     return 0;
 }
@@ -72,9 +81,13 @@ int main()
     "Name": "John",
     "Gender": "Male",
     "Employed": "false",
+    "Skills": "C++, CMake, Git",
     "Address": {
         "Street": "Example Street",
         "Building": "42"
+    },
+    "Server": {
+        "Ports": [8080, 9090, 3000]
     }
 }
 ```
@@ -83,18 +96,21 @@ int main()
 
 | Method | Description |
 |---|---|
-| `LoadFile(filepath)` | Loads and parses a configuration file. |
-| `fetchData()` | Returns the extracted key-value pairs. |
-| `returnParse()` | Returns the generated token list. |
+| `LoadFile(filepath)` | Loads, tokenizes, and parses a configuration file into memory. |
+| `get<T>(key)` | Retrieves the value for `key` and converts it to type `T` (defaults to `std::string`). |
+| `getBool(key)` | Parses and returns the boolean value (`true` / `false`) stored at `key`. |
+| `getVector<T>(key)` | Splits a comma-separated list or array at `key` and converts each element into `std::vector<T>`. |
+| `fetchData()` | Returns the underlying `std::unordered_map<std::string, std::string>` of flattened key-value pairs. |
+| `returnParse()` | Returns the raw `std::vector<std::string>` token list generated during tokenization. |
 
 ## Building & Testing
 
-MConfig uses the C++ Standard Library and does not require external dependencies.
+MConfig is header-only and uses the C++ Standard Library with no external dependencies.
 
-Compile the test program:
+Compile the test program with C++17 or C++20:
 
 ```bash
-g++ tests/main.cpp -o program
+g++ -std=c++20 tests/main.cpp -o program
 ```
 
 Run the executable from the `tests/` directory:
@@ -104,25 +120,22 @@ cd tests
 ./program.exe
 ```
 
-The test suite checks whether the configuration file loads correctly, tokens are generated, and expected keys are extracted.
-
 ## Dependencies
 
-- C++20 recommended.
-- Standard C++ Library.
+- **C++17 or C++20** (uses `if constexpr` and `std::string_view`).
+- **Standard C++ Library** only.
 - No external parsing libraries.
 
 ## Development Goals
 
-MConfig is an experimental project focused on understanding and implementing configuration parsing from the ground up.
+MConfig is an experimental project focused on building a clean, reusable configuration parser from the ground up.
 
-Future development aims to introduce:
+Future updates aim to add:
 
-- More primitive data types.
-- Robust syntax validation.
-- Better error reporting.
-- Improved nested data structures.
-- A more flexible configuration access interface.
+- Fallback default value lookups.
+- Escaped characters inside quoted strings (`\"`, `\n`, `\\`).
+- Line-by-line syntax error reporting with line numbers.
+- Support for quoted strings containing commas inside arrays.
 
 ## License
 
