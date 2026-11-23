@@ -10,6 +10,7 @@
 #include <cctype>
 #include <algorithm>
 #include <variant>
+#include <cstring>
 #include <unordered_map>
 #include <stdexcept>
 #include <type_traits>
@@ -53,6 +54,14 @@ public:
         if(!file){
             std::cerr << "File couldnt be loaded" << "\n";
             return;
+        }
+        const char* dotPos = std::strchr(filepath, '.');  
+        const char* extension = nullptr;
+        if(dotPos != nullptr){
+            extension = dotPos + 1;
+        }
+        if (extension != "json"){
+            std::cerr << "Currently can only parse json files, while the provided file type was: " << extension << "\n";
         }
         std::ostringstream buffer;
         buffer << file.rdbuf();
@@ -145,7 +154,7 @@ private:
         };
 
         std::vector<string> path;
-
+         
         for (int i = 0; i < parse.size(); i++) {
             //My Sub-branch
             if(parse[i] == ":" && i > 0 && i+1 < parse.size() && parse[i+1] == "{" ){

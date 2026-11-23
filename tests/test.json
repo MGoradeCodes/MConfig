@@ -2,7 +2,7 @@
     "Name" : "Anthony",
     "NickName": "Lebowsky",
     "Age": 12,
-    "Gender" : "Male" ,
+    "ISMALE" : true ,
     "Employed" : true,
     "Money" : "123.654",
     "Friends" : "Johnny, Rachel, Michelle, Edward",
@@ -11,4 +11,5 @@
         "Building": "Sunflower Building"
     },
     "StringBool" : "true"
+
 }

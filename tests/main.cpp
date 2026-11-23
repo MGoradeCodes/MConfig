@@ -19,7 +19,7 @@ void runTests() {
 
     // Verify expected keys exist
     assert(data.find("Name") != data.end());
-    assert(data.find("Gender") != data.end());
+    assert(data.find("ISMALE") != data.end());
     assert(data.find("Employed") != data.end());
     assert(data.find("Address.Street") != data.end());
     assert(data.find("Address.Building") != data.end());
@@ -28,7 +28,7 @@ void runTests() {
 
     // Print parsed values
     std::cout << "Name is: " << data["Name"] << "\n";
-    std::cout << "Gender: " << data["Gender"] << "\n";
+    std::cout << "Gender: " << data["ISMALE"] << "\n";
     std::cout << "Employed?: " << data["Employed"] << "\n";
     std::cout << "Address: Street: " << data["Address.Street"] << "\n";
     std::cout << "Building: " << data["Address.Building"] << "\n";
