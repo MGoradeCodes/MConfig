@@ -9,6 +9,7 @@
 #include <string_view>
 #include <cctype>
 #include <algorithm>
+#include <filesystem>
 #include <variant>
 #include <cstring>
 #include <unordered_map>
@@ -55,13 +56,10 @@ public:
             std::cerr << "File couldnt be loaded" << "\n";
             return;
         }
-        const char* dotPos = std::strchr(filepath, '.');  
-        const char* extension = nullptr;
-        if(dotPos != nullptr){
-            extension = dotPos + 1;
-        }
-        if (extension != "json"){
+        std::string extension = std::filesystem::path(filepath).extension().string();
+        if (extension!= ".json"){
             std::cerr << "Currently can only parse json files, while the provided file type was: " << extension << "\n";
+            return;
         }
         std::ostringstream buffer;
         buffer << file.rdbuf();
