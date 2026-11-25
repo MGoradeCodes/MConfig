@@ -1,0 +1,7 @@
+#MY COMMENT
+
+[IGNORE]
+name = "John"
+age = 34
+company = "AppleLanders"
+friends = ["John" , "Joginder" , "Parmeet", "Rajas"]
